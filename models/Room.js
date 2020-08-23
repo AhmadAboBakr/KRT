@@ -1,4 +1,5 @@
 const Peer = require("./Peer");
+const Table = require("./TableData");
 
 class Room {
     /**
@@ -14,10 +15,19 @@ class Room {
      * @type { Number } Maximum number of peers the room should have
      */
     maxPeers = 8;
-    
     variables = [];
+    /**
+     * @type { Table } Maximum number of peers the room should have
+     */
+
+    tableData;
     #currentPlayers = 1;
     #hashedPeers = [];
+
+
+    constructor(){
+        this.tableData= new Table();
+    }
 
     /**
      * Sets the room id
@@ -48,7 +58,7 @@ class Room {
      * @throws AppError if maxPeers is reached
      */
     AddPeer(peer) {
-        var hash = "o" + peer.oculusAvatarID;
+        var hash = "o" + peer.serverID;
         if (this.#hashedPeers[hash]) {
             peer.id = this.#hashedPeers[hash].id;
         }
@@ -72,9 +82,9 @@ class Room {
     }
 
     SendInitMessages(peer) {
-        peer.sendMessage("spawn", this, peer.id);
+        peer.sendMessage("4", {data:JSON.stringify(this.tableData)}, peer.id); 
         //peer.sendMessage("movePlayer", {}, peer.id);
-        this.BroadcastMessage("spawn", { "peers": [peer] }, peer.id);
+        //this.BroadcastMessage("spawn", { "peers": [peer] }, peer.id);
     }
 
     /**

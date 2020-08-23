@@ -20,7 +20,7 @@ io.on("connection", (socket) => {
     try {
         room = app.getRoomById(parseInt(socket.handshake.query.room));
         var peer = new Peer(socket, String(socket.handshake.query.id), String(socket.handshake.query.userName));
-        peer.isTeacher = socket.handshake.query.isTeacher || false;
+        peer.isHost = socket.handshake.query.isTeacher || false;
 
         if (!room) {
             peer.sendMessage('error', 'Invalid request!');

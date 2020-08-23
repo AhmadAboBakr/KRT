@@ -8,17 +8,17 @@ class Peer {
      * @type {Number} id the ID of the user, used in communication
      */
     id;
-    isTeacher=false;
+    isHost=false;
 
     /**
      *
      * @param {SocketIO.Socket} socket The socket
-     * @param {String} oculusAvatarID OVRID
+     * @param {String} serverID OVRID
      * @param {string} name the user name
      */
-    constructor(socket, oculusAvatarID, name) {
+    constructor(socket, serverID, name) {
         this.name = name ;
-        this.oculusAvatarID = oculusAvatarID ;
+        this.serverID = serverID ;
         this.#socket = socket;
     }
 
