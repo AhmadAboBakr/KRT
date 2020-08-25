@@ -32,6 +32,11 @@ class Table {
         this.playerBlack = { playerColor: 2, reserve: new Slot(0, 0, 0), id: 1,type:3 };
         this.currentPlayer = Math.random() > .5 ? this.playerBlack : this.playerWhite;
     }
+
+    Move(source,dest){
+        this.slots[dest].AddToken(this.slots[source].topColor);
+        this.slots[source].RemoveToken();
+    }
 }
 
 class Slot {
@@ -42,6 +47,24 @@ class Slot {
         this.baseColor = base;
         this.topColor = top;
         this.piecesNumber = number;
+    }
+    AddToken(color){
+        if(this.number==0){
+            this.baseColor=color;
+        }
+        this.topColor=color;
+        this.number++;
+    }
+    RemoveToken(){
+        if(this.number==0)
+            return;
+        if(this.number==1){
+            this.topColor=this.baseColor=0;
+        }
+        if(this.number==2){
+            this.topColor=this.baseColor;
+        }
+        this.number--;
     }
 }
 

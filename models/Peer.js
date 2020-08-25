@@ -52,7 +52,6 @@ class Peer {
             "senderID": id
         };
         this.#socket.emit("RTMessage", b);
-        console.log(">>"+JSON.stringify(b));
     }
 }
 

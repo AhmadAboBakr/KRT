@@ -34,16 +34,12 @@ io.on("connection", (socket) => {
             console.log(error.message);
 
         }
-        
+
     }
     catch (error) {
         console.log('error! ', error.message);
     }
 
-    socket.on("RTMessage", (data) => {
-        var msg = data;
-        room.BroadcastMessage(msg.name, msg.data, msg.senderID);
-    });
     socket.on("disconnect", () => {
         try {
             room.RemovePeerBySocket(socket);

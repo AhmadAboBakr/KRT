@@ -19,7 +19,6 @@ class Room {
     /**
      * @type { Table } Maximum number of peers the room should have
      */
-
     tableData;
     #currentPlayers = 1;
     #hashedPeers = [];
@@ -137,8 +136,20 @@ class Room {
     RegisterPeerMessages(peer) {
         console.log("registered player :"+peer.id);
         peer.socket.on("RTMessage", (msg) => {
-            console.log("<<"+JSON.stringify( msg));
+            switch(msg.name){
+                case 1://onMove
+                var data=JSON.parse(msg.data);
+                this.tableData.Move(data.ss,data.ts);
+                case 3://on end turn
+
+                    break;
+                case 6://undo
+
+                    break;
+                break;
+            };
             this.BroadcastMessage(msg.name, msg.data, msg.senderID);
+
         });
         peer.socket.on("setVariable", (data) => {
              this.BroadcastMessage("variableSet",  data, -2);
