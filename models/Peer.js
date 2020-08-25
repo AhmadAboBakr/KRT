@@ -1,3 +1,5 @@
+const { json } = require("express");
+
 class Peer {
     /**
      * @type {SocketIO.Socket} the socket
@@ -40,13 +42,17 @@ class Peer {
      * @param {any} body message body
      * @param {Number} id userID
      */
-    sendMessage(message, body, id) {
+    sendMessage(message, body, id,shouldStringfy=false) {
+        if(shouldStringfy){
+            body=JSON.stringify(body);
+        }
         var b = {
             "name": message,
-            "data": JSON.stringify(body),
+            "data": body,
             "senderID": id
         };
         this.#socket.emit("RTMessage", b);
+        console.log(">>"+JSON.stringify(b));
     }
 }
 

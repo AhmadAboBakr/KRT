@@ -66,12 +66,7 @@ class Room {
             throw new AppError({ publicMessage: 'Can not add peer, max peers is reached!' });
         }
         else {
-            if (peer.isTeacher == "true") {
-                peer.id = 0;
-            }
-            else {
                 peer.id = this.#currentPlayers++;
-            }
         }
         this.#hashedPeers[hash] = peer;
         this.RegisterPeerMessages(peer);
@@ -82,7 +77,7 @@ class Room {
     }
 
     SendInitMessages(peer) {
-        peer.sendMessage("4", {data:JSON.stringify(this.tableData)}, peer.id); 
+        peer.sendMessage("4", JSON.stringify({data:JSON.stringify(this.tableData)}), peer.id); 
         //peer.sendMessage("movePlayer", {}, peer.id);
         //this.BroadcastMessage("spawn", { "peers": [peer] }, peer.id);
     }
@@ -124,10 +119,13 @@ class Room {
      * @param {Number} sender the Sender
      */
     BroadcastMessage(name, data, sender) {
+        var hamada=0;
         for (var i = 0; i < this.peers.length; i++) {
-            if (sender != this.peers[i].id) {
+            //if (sender != this.peers[i].id) 
+            {
+                console.log(hamada++);
                 try {
-                    this.peers[i].sendMessage(name, data, sender);
+                    this.peers[i].sendMessage(name, data, i);
                 }
                 catch (ex) {
                     console.log(ex);
@@ -137,7 +135,9 @@ class Room {
     }
 
     RegisterPeerMessages(peer) {
+        console.log("registered player :"+peer.id);
         peer.socket.on("RTMessage", (msg) => {
+            console.log("<<"+JSON.stringify( msg));
             this.BroadcastMessage(msg.name, msg.data, msg.senderID);
         });
         peer.socket.on("setVariable", (data) => {

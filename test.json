@@ -1,0 +1,155 @@
+{
+    "currentPlayer": {
+        "playerColor": 0,
+        "reserve": {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        "id": 0,
+        "type": 0
+    },
+    "slots": [
+        {
+            "baseColor": 2,
+            "topColor": 2,
+            "piecesNumber": 15
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        {
+            "baseColor": 1,
+            "topColor": 1,
+            "piecesNumber": 15
+        }
+    ],
+    "dice": [],
+    "playerWhite": {
+        "playerColor": 1,
+        "reserve": {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        "id": 0,
+        "type": 0
+    },
+    "playerBlack": {
+        "playerColor": 2,
+        "reserve": {
+            "baseColor": 0,
+            "topColor": 0,
+            "piecesNumber": 0
+        },
+        "id": 1,
+        "type": 0
+    }
+}
