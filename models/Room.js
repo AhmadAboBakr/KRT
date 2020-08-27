@@ -1,5 +1,6 @@
 const Peer = require("./Peer");
-const Table = require("./TableData");
+const Table = require("./Table");
+const Tawla = require("./Tawla");
 
 class Room {
     /**
@@ -22,10 +23,10 @@ class Room {
     tableData;
     #currentPlayers = 1;
     #hashedPeers = [];
+    constructor() {
+        this.tableData = new Table();
+        console.log(JSON.stringify(this.tableData,null,2));
 
-
-    constructor(){
-        this.tableData= new Table();
     }
 
     /**
@@ -65,7 +66,7 @@ class Room {
             throw new AppError({ publicMessage: 'Can not add peer, max peers is reached!' });
         }
         else {
-                peer.id = this.#currentPlayers++;
+            peer.id = this.#currentPlayers++;
         }
         this.#hashedPeers[hash] = peer;
         this.RegisterPeerMessages(peer);
@@ -74,13 +75,11 @@ class Room {
         return peer.id;
 
     }
-
     SendInitMessages(peer) {
-        peer.sendMessage("4", JSON.stringify({data:JSON.stringify(this.tableData)}), peer.id); 
+        peer.sendMessage("4", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id);
         //peer.sendMessage("movePlayer", {}, peer.id);
         //this.BroadcastMessage("spawn", { "peers": [peer] }, peer.id);
     }
-
     /**
      *
      * @param {SocketIO.Socket} socket the socket used by the peer to Remove
@@ -118,11 +117,10 @@ class Room {
      * @param {Number} sender the Sender
      */
     BroadcastMessage(name, data, sender) {
-        var hamada=0;
+        var hamada = 0;
         for (var i = 0; i < this.peers.length; i++) {
             //if (sender != this.peers[i].id) 
             {
-                console.log(hamada++);
                 try {
                     this.peers[i].sendMessage(name, data, i);
                 }
@@ -134,25 +132,19 @@ class Room {
     }
 
     RegisterPeerMessages(peer) {
-        console.log("registered player :"+peer.id);
+        console.log("registered player :" + peer.id);
         peer.socket.on("RTMessage", (msg) => {
-            switch(msg.name){
-                case 1://onMove
-                var data=JSON.parse(msg.data);
-                this.tableData.Move(data.ss,data.ts);
-                case 3://on end turn
-
-                    break;
-                case 6://undo
-
-                    break;
-                break;
-            };
+            var data={};
+            if(msg.data){
+                data = JSON.parse(msg.data);
+            }
+            var tawla=new Tawla(this.tableData);
+            msg.data=tawla.Apply(msg.name,data);
             this.BroadcastMessage(msg.name, msg.data, msg.senderID);
-
+            console.log(JSON.stringify(this.tableData.currentPlayer,null,2));
         });
         peer.socket.on("setVariable", (data) => {
-             this.BroadcastMessage("variableSet",  data, -2);
+            this.BroadcastMessage("variableSet", data, -2);
             this.variables[data.name] = data.value;
         });
     }

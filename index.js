@@ -7,8 +7,7 @@ var io = require("socket.io")(3200);
 const expressApp = express();
 
 app.generateRoom(); //for testing
-app.generateRoom(); //for testing
-app.generateRoom(); //for testing
+
 
 let routes = require('./routes');
 expressApp.use(routes);
@@ -43,7 +42,6 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         try {
             room.RemovePeerBySocket(socket);
-            console.log(room);
         }
         catch (error) {
             console.log(error.message);
