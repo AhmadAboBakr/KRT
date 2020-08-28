@@ -63,7 +63,7 @@ class Slot {
         this.piecesNumber = number;
     }
     AddToken(color) {
-        if (this.number == 0) {
+        if (this.piecesNumber == 0) {
             this.baseColor = color;
         }
         this.topColor = color;

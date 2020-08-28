@@ -15,7 +15,7 @@ class Room {
     /**
      * @type { Number } Maximum number of peers the room should have
      */
-    maxPeers = 8;
+    maxPeers = 2;
     variables = [];
     /**
      * @type { Table } Maximum number of peers the room should have
@@ -49,7 +49,6 @@ class Room {
             this.availableSeats[i] = i + 1;
         }
     }
-
     /**
      *
      * @param {Peer} peer the peer to add to the room
@@ -116,7 +115,6 @@ class Room {
      * @param {Number} sender the Sender
      */
     BroadcastMessage(name, data, sender) {
-        var hamada = 0;
         for (var i = 0; i < this.peers.length; i++) {
             //if (sender != this.peers[i].id) 
             {

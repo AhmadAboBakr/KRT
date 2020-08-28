@@ -11,7 +11,11 @@ class Tawla{
     Apply(id,data){
         switch (id) {
             case 1://onMove
+   
                 this.table.Move(data.ss, data.ts);
+                console.log("moved from:  "+data.ss+" to: "+data.ts);
+                console.log(this.table.slots[data.ss]);
+                console.log(this.table.slots[data.ts]);
                 break;
             case 3://on end  
                 this.table.currentPlayer = (this.table.currentPlayer.playerColor == this.table.playerWhite.playerColor)?this.table.playerBlack:this.table.playerWhite;
