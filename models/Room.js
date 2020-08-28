@@ -21,7 +21,7 @@ class Room {
      * @type { Table } Maximum number of peers the room should have
      */
     tableData;
-    #currentPlayers = 1;
+    #currentPlayers = 0;
     #hashedPeers = [];
     constructor() {
         this.tableData = new Table();
