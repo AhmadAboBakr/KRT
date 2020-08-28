@@ -26,7 +26,6 @@ class Room {
     constructor() {
         this.tableData = new Table();
         console.log(JSON.stringify(this.tableData,null,2));
-
     }
 
     /**
@@ -58,7 +57,7 @@ class Room {
      * @throws AppError if maxPeers is reached
      */
     AddPeer(peer) {
-        var hash = "o" + peer.serverID;
+        var hash = peer.serverID;
         if (this.#hashedPeers[hash]) {
             peer.id = this.#hashedPeers[hash].id;
         }
@@ -122,7 +121,7 @@ class Room {
             //if (sender != this.peers[i].id) 
             {
                 try {
-                    this.peers[i].sendMessage(name, data, i);
+                    this.peers[i].sendMessage(name, data, sender);
                 }
                 catch (ex) {
                     console.log(ex);
