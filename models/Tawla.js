@@ -11,21 +11,17 @@ class Tawla{
     Apply(id,data){
         switch (id) {
             case 1://onMove
-   
-                this.table.Move(data.ss, data.ts);
-                console.log("moved from:  "+data.ss+" to: "+data.ts);
-                console.log(this.table.slots[data.ss]);
-                console.log(this.table.slots[data.ts]);
+                this.table.Move(data.source, data.target);
                 break;
-            case 3://on end  
+            case 4://on end  
                 this.table.currentPlayer = (this.table.currentPlayer.playerColor == this.table.playerWhite.playerColor)?this.table.playerBlack:this.table.playerWhite;
                 this.table.GenerateDice();
                 data={};
                 data.color=this.table.currentPlayer.playerColor;
                 data.dice=( this.table.dice.GetString());
                 break;
-            case 6://undo
-                this.table.Move(data.ss, data.ts);
+            case 3://undo
+                this.table.Move(data.target, data.source);
                 break;
         };
         return JSON.stringify(data);

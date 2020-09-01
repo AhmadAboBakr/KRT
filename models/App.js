@@ -16,6 +16,7 @@ class App {
      * @type { Room[] } List of rooms the app currently has
     */
     rooms = [];
+    availableRooms=[]
 
     /**
      * Generate a new room
@@ -28,7 +29,7 @@ class App {
         if(this.rooms.length > 1000) throw new AppError({message: "Too many rooms!"})
         let newRoom = new Room();
         newRoom.setId(this.rooms.push(newRoom) - 1);
-        console.log('room generated with ID'+newRoom.id);
+        this.availableRooms.push(newRoom);
         return newRoom;
     }
 
@@ -44,6 +45,13 @@ class App {
             throw new AppError({ publicMessage: 'Requested room ' + id + ' does not exist!'});
         }
         return this.rooms[id];
+    }
+    
+    JoinOrCreateRoom(){
+        if(this.availableRooms.length>0){
+            return this.availableRooms[0];
+        }
+        else return this.generateRoom();
     }
 }
 

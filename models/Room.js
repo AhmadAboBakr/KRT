@@ -1,6 +1,7 @@
 const Peer = require("./Peer");
 const Table = require("./Table");
 const Tawla = require("./Tawla");
+//const app = require("./App");
 
 class Room {
     /**
@@ -15,17 +16,16 @@ class Room {
     /**
      * @type { Number } Maximum number of peers the room should have
      */
-    maxPeers = 2;
+    maxPeers = 2;d
     variables = [];
     /**
      * @type { Table } Maximum number of peers the room should have
      */
     tableData;
-    #currentPlayers = 0;
+    #currentPlayers = 1;
     #hashedPeers = [];
     constructor() {
         this.tableData = new Table();
-        console.log(JSON.stringify(this.tableData,null,2));
     }
 
     /**
@@ -74,9 +74,13 @@ class Room {
 
     }
     SendInitMessages(peer) {
-        peer.sendMessage("4", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id);
-        //peer.sendMessage("movePlayer", {}, peer.id);
-        //this.BroadcastMessage("spawn", { "peers": [peer] }, peer.id);
+        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id);
+
+        if (this.peers.length == this.maxPeers) {
+            for (let i = 0; i < this.peers.length; i++) {
+                peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), i + 1);
+            }
+        }
     }
     /**
      *
@@ -90,11 +94,14 @@ class Room {
             this.BroadcastMessage("remove", {}, seat);
             console.log("removed player number " + index + ":" + seat);
         }
+        if(this.peers.length==0){
+            //// Delete Room from list
+            ///// this requires a ton shit of work fuck it for now but please fix later
+        }
         else {
             throw new AppError({ publicMessage: 'Can not remove peer' });
         }
     }
-
     /**
      *
      * @param {any} id the peer ID
@@ -131,14 +138,14 @@ class Room {
     RegisterPeerMessages(peer) {
         console.log("registered player :" + peer.id);
         peer.socket.on("RTMessage", (msg) => {
-            var data={};
-            if(msg.data){
+            var data = {};
+            if (msg.data) {
                 data = JSON.parse(msg.data);
             }
-            var tawla=new Tawla(this.tableData);
-            msg.data=tawla.Apply(msg.name,data);
+            var tawla = new Tawla(this.tableData);
+            msg.data = tawla.Apply(msg.name, data);
             this.BroadcastMessage(msg.name, msg.data, msg.senderID);
-            console.log(JSON.stringify(this.tableData.currentPlayer,null,2));
+            console.log(JSON.stringify(this.tableData.currentPlayer, null, 2));
         });
         peer.socket.on("setVariable", (data) => {
             this.BroadcastMessage("variableSet", data, -2);
