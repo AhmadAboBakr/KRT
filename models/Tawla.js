@@ -10,8 +10,8 @@ class Tawla{
     }
     Apply(id,data){
         switch (id) {
-            case 1://onMove
-                this.table.Move(data.source, data.target);
+            case 2://onMove
+                this.table.Move(data.source, data.target,JSON.parse(data.dice));
                 break;
             case 4://on end  
                 this.table.currentPlayer = (this.table.currentPlayer.playerColor == this.table.playerWhite.playerColor)?this.table.playerBlack:this.table.playerWhite;
@@ -21,7 +21,7 @@ class Tawla{
                 data.dice=( this.table.dice.GetString());
                 break;
             case 3://undo
-                this.table.Move(data.target, data.source);
+                this.table.Undo(data.target, data.source,JSON.parse(data.dice));
                 break;
         };
         return JSON.stringify(data);

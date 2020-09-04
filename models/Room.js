@@ -1,7 +1,7 @@
 const Peer = require("./Peer");
 const Table = require("./Table");
 const Tawla = require("./Tawla");
-//const app = require("./App");
+const app = require("./App");
 
 class Room {
     /**
@@ -68,17 +68,17 @@ class Room {
         }
         this.#hashedPeers[hash] = peer;
         this.RegisterPeerMessages(peer);
-        this.SendInitMessages(peer);
         this.peers.push(peer);
+        this.SendInitMessages(peer);
         return peer.id;
 
     }
     SendInitMessages(peer) {
-        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id);
-
+        peer.sendMessage("0", JSON.stringify({ roomID: this.id }), peer.id);
+        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id );
         if (this.peers.length == this.maxPeers) {
             for (let i = 0; i < this.peers.length; i++) {
-                peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), i + 1);
+           //     peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), i + 1);
             }
         }
     }
@@ -97,6 +97,7 @@ class Room {
         if(this.peers.length==0){
             //// Delete Room from list
             ///// this requires a ton shit of work fuck it for now but please fix later
+            app.removeRomeByID(this.id);
         }
         else {
             throw new AppError({ publicMessage: 'Can not remove peer' });

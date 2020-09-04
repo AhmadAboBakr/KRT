@@ -39,9 +39,22 @@ class Table {
         this.currentPlayer = Math.random() > .5 ? this.playerBlack : this.playerWhite;
     }
 
-    Move(source, dest) {
+    Move(source, dest,dice) {
         this.slots[dest].AddToken(this.slots[source].topColor);
         this.slots[source].RemoveToken();
+        for (let i = 0; i < dice.dice.length; i++) {
+            var index =this.dice.dice.indexOf(dice.dice[i]);
+            this.dice.dice.splice(index,1);
+        }
+     
+    }
+    Undo(source, dest,dice) {
+        this.slots[dest].AddToken(this.slots[source].topColor);
+        this.slots[source].RemoveToken();
+        for (let i = 0; i < dice.dice.length; i++) {    
+            this.dice.dice.push(dice.dice[i]);
+        }
+     
     }
     GenerateDice() {
         this.dice.dice = [];

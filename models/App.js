@@ -16,8 +16,7 @@ class App {
      * @type { Room[] } List of rooms the app currently has
     */
     rooms = [];
-    availableRooms=[]
-
+    lastId=-1;
     /**
      * Generate a new room
      *
@@ -28,8 +27,9 @@ class App {
         //Just in case
         if(this.rooms.length > 1000) throw new AppError({message: "Too many rooms!"})
         let newRoom = new Room();
-        newRoom.setId(this.rooms.push(newRoom) - 1);
-        this.availableRooms.push(newRoom);
+        this.lastId++;
+        newRoom.setId(this.lastId);
+        this.rooms[this.lastId]=newRoom;
         return newRoom;
     }
 
@@ -48,10 +48,15 @@ class App {
     }
     
     JoinOrCreateRoom(){
-        if(this.availableRooms.length>0){
-            return this.availableRooms[0];
+        if(this.rooms[this.lastId] && this.rooms[this.lastId].peers.length<this.rooms[this.lastId].maxPeers){
+            return this.rooms[this.lastId];
         }
         else return this.generateRoom();
+    }
+
+
+    removeRomeByID(id){
+        this.rooms[id]=undefined;
     }
 }
 
