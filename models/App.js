@@ -3,15 +3,6 @@ const AppError = require('../Errors/AppError')
 
 class App {
 
-    static instance;
-
-    App() {
-        if (instance) {
-            return instance;
-        }
-        this.instance = this;
-    }
-
     /**
      * @type { Room[] } List of rooms the app currently has
     */
@@ -26,7 +17,7 @@ class App {
     generateRoom() {
         //Just in case
         if(this.rooms.length > 1000) throw new AppError({message: "Too many rooms!"})
-        let newRoom = new Room();
+        let newRoom = new Room(this);
         this.lastId++;
         newRoom.setId(this.lastId);
         this.rooms[this.lastId]=newRoom;
@@ -56,7 +47,7 @@ class App {
 
 
     removeRomeByID(id){
-        this.rooms[id]=undefined;
+        this.rooms[id]=null;//// Todo make it better
     }
 }
 

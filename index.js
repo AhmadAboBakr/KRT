@@ -6,7 +6,6 @@ var io = require("socket.io")(3150);
 
 const expressApp = express();
 
-app.generateRoom(); //for testing
 
 
 let routes = require('./routes');
@@ -17,7 +16,15 @@ expressApp.listen(3500)
 io.on("connection", (socket) => {
     var room;
     try {
-        room = app.getRoomById(parseInt(socket.handshake.query.room));
+        setInterval(() => {
+            socket.emit("ping");
+        }, 5000);
+        if(socket.handshake.query.room == undefined){
+            room=app.JoinOrCreateRoom();
+        }
+        else{
+            room = app.getRoomById(parseInt(socket.handshake.query.room));
+        }
         var peer = new Peer(socket, String(socket.handshake.query.id), String(socket.handshake.query.userName));
         if (!room) {
             peer.sendMessage('error', 'Invalid request!');
@@ -29,9 +36,7 @@ io.on("connection", (socket) => {
         catch (error) {
             peer.sendMessage('error', {message:"roomfull"});
             console.log(error.message);
-
         }
-
     }
     catch (error) {
         console.log('error! ', error.message);

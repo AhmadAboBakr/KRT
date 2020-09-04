@@ -10,7 +10,7 @@ class Peer {
      * @type {Number} id the ID of the user, used in communication
      */
     id;
-    isHost=false;
+    isHost = false;
 
     /**
      *
@@ -19,8 +19,8 @@ class Peer {
      * @param {string} name the user name
      */
     constructor(socket, serverID, name) {
-        this.name = name ;
-        this.serverID = serverID ;
+        this.name = name;
+        this.serverID = serverID;
         this.#socket = socket;
     }
 
@@ -31,7 +31,7 @@ class Peer {
      */
     setId(id) {
         this.id = id;
-     }
+    }
 
     get socket() {
         return this.#socket;
@@ -42,9 +42,9 @@ class Peer {
      * @param {any} body message body
      * @param {Number} id userID
      */
-    sendMessage(message, body, id,shouldStringfy=false) {
-        if(shouldStringfy){
-            body=JSON.stringify(body);
+    sendMessage(message, body, id, shouldStringfy = false) {
+        if (shouldStringfy) {
+            body = JSON.stringify(body);
         }
         var b = {
             "name": message,
@@ -52,6 +52,10 @@ class Peer {
             "senderID": id
         };
         this.#socket.emit("RTMessage", b);
+    }
+    sendRawMessage(message, body) {
+
+        this.#socket.emit(message, body);
     }
 }
 

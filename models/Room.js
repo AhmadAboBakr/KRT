@@ -1,7 +1,6 @@
 const Peer = require("./Peer");
 const Table = require("./Table");
 const Tawla = require("./Tawla");
-const app = require("./App");
 
 class Room {
     /**
@@ -16,7 +15,7 @@ class Room {
     /**
      * @type { Number } Maximum number of peers the room should have
      */
-    maxPeers = 2;d
+    maxPeers = 2;
     variables = [];
     /**
      * @type { Table } Maximum number of peers the room should have
@@ -24,7 +23,9 @@ class Room {
     tableData;
     #currentPlayers = 1;
     #hashedPeers = [];
-    constructor() {
+    #app;
+    constructor(app) {
+        this.#app=app;
         this.tableData = new Table();
     }
 
@@ -71,15 +72,13 @@ class Room {
         this.peers.push(peer);
         this.SendInitMessages(peer);
         return peer.id;
-
     }
     SendInitMessages(peer) {
-        peer.sendMessage("0", JSON.stringify({ roomID: this.id }), peer.id);
-        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id );
-        if (this.peers.length == this.maxPeers) {
-            for (let i = 0; i < this.peers.length; i++) {
-           //     peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), i + 1);
-            }
+        peer.sendRawMessage("init",  this.id);
+        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id);
+        console.log("init peer.id: ", peer.id);
+        if(this.peers.length>=this.maxPeers){
+            this.#app.generateRoom();
         }
     }
     /**
@@ -97,7 +96,7 @@ class Room {
         if(this.peers.length==0){
             //// Delete Room from list
             ///// this requires a ton shit of work fuck it for now but please fix later
-            app.removeRomeByID(this.id);
+          //this.#app.removeRomeByID(this.id);
         }
         else {
             throw new AppError({ publicMessage: 'Can not remove peer' });
@@ -137,7 +136,6 @@ class Room {
     }
 
     RegisterPeerMessages(peer) {
-        console.log("registered player :" + peer.id);
         peer.socket.on("RTMessage", (msg) => {
             var data = {};
             if (msg.data) {
@@ -146,7 +144,6 @@ class Room {
             var tawla = new Tawla(this.tableData);
             msg.data = tawla.Apply(msg.name, data);
             this.BroadcastMessage(msg.name, msg.data, msg.senderID);
-            console.log(JSON.stringify(this.tableData.currentPlayer, null, 2));
         });
         peer.socket.on("setVariable", (data) => {
             this.BroadcastMessage("variableSet", data, -2);
