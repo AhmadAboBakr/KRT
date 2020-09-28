@@ -11,8 +11,8 @@ class Table {
     /**
      * @type {Peer} the socket
      */
-    blackReserveSlot=new Slot(0,0,0);
-    whiteReserveSlot=new Slot(0,0,0);
+    blackReserveSlot = new Slot(0, 0, 0);
+    whiteReserveSlot = new Slot(0, 0, 0);
 
     constructor(socket, serverID, name) {
         this.dice = { dice: [] };
@@ -34,44 +34,57 @@ class Table {
             this.slots[index] = new Slot(0, 0, 0);
         }
         this.slots[23] = new Slot(1, 1, 15);
-        this.blackReserveSlot= new Slot(0, 0, 0);
-        this.whiteReserveSlot= new Slot(0, 0, 0);
+        this.blackReserveSlot = new Slot(0, 0, 0);
+        this.whiteReserveSlot = new Slot(0, 0, 0);
         this.playerTurn = Math.random() > .5 ? this.playerBlack : this.playerWhite;
     }
 
-    Move(source, dest,dice) {
-        
+    Move(source, dest, dice) {
+
         var piece = this.slots[source];
-        this.slots[source].RemoveToken();
-        if(dest <= 23&& dest >= 0){
+        if (dest <= 23 && dest >= 0) {
             this.slots[dest].AddToken(this.slots[source].topColor);
-        }    
-        else{
-            if(piece.topColor==1){
+        }
+        else {
+            if (piece.topColor == 1) {
                 this.whiteReserveSlot.AddToken(topColor);
             }
-            else if(piece.topColor==2){
+            else if (piece.topColor == 2) {
                 this.blackReserveSlot.AddToken(topColor);
 
             }
-            else{
+            else {
                 /// DO something to update the tables to everyone that ever exsisted and return
                 throw "something";
             }
         }
-        
-        for (let i = 0; i < dice.dice.length; i++) {
-            var index =this.dice.dice.indexOf(dice.dice[i]);
-            this.dice.dice.splice(index,1);
-        }     
-    }
-    Undo(source, dest,dice) {
-        this.slots[dest].AddToken(this.slots[source].topColor);
         this.slots[source].RemoveToken();
-        for (let i = 0; i < dice.dice.length; i++) {    
+        for (let i = 0; i < dice.dice.length; i++) {
+            var index = this.dice.dice.indexOf(dice.dice[i]);
+            this.dice.dice.splice(index, 1);
+        }
+    }
+    Undo(source, dest, dice) {
+        if (source <= 23 && source >= 0) {
+            this.slots[dest].AddToken(this.slots[source].topColor);
+            this.slots[source].RemoveToken();
+        }
+        else {
+            if (source == -1) {
+                this.slots[dest].AddToken(this.whiteReserveSlot.topColor);
+                this.whiteReserveSlot.RemoveToken();
+
+            }
+            else if (source == 24) {
+                this.slots[dest].AddToken(this.blackReserveSlot.topColor);
+                this.blackReserveSlot.RemoveToken();
+
+            }
+        }
+        for (let i = 0; i < dice.dice.length; i++) {
             this.dice.dice.push(dice.dice[i]);
         }
-     
+
     }
     GenerateDice() {
         this.dice.dice = [];
