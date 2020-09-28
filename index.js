@@ -19,11 +19,16 @@ io.on("connection", (socket) => {
         setInterval(() => {
             socket.emit("ping");
         }, 5000);
+
         if(socket.handshake.query.room == undefined){
+            console.log("someone wants a new match")
             room=app.JoinOrCreateRoom();
+
         }
         else{
             room = app.getRoomById(parseInt(socket.handshake.query.room));
+            console.log("someone is rejoining")
+
         }
         var peer = new Peer(socket, String(socket.handshake.query.id), String(socket.handshake.query.userName));
         if (!room) {

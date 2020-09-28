@@ -21,7 +21,7 @@ class Room {
      * @type { Table } Maximum number of peers the room should have
      */
     tableData;
-    #currentPlayers = 1;
+    #currentPlayers = 0;
     #hashedPeers = [];
     #app;
     constructor(app) {
@@ -60,12 +60,16 @@ class Room {
         var hash = peer.serverID;
         if (this.#hashedPeers[hash]) {
             peer.id = this.#hashedPeers[hash].id;
+            console.log("old peer with id: ", peer.id+"in room :"+this.id);
+
         }
         else if (this.peers.length >= this.maxPeers) {
             throw new AppError({ publicMessage: 'Can not add peer, max peers is reached!' });
         }
         else {
             peer.id = this.#currentPlayers++;
+            console.log("new peer with id: ", peer.id+"in room :"+this.id);
+
         }
         this.#hashedPeers[hash] = peer;
         this.RegisterPeerMessages(peer);
@@ -76,7 +80,6 @@ class Room {
     SendInitMessages(peer) {
         peer.sendRawMessage("init",  this.id);
         peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id);
-        console.log("init peer.id: ", peer.id);
         if(this.peers.length>=this.maxPeers){
             this.#app.generateRoom();
         }

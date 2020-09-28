@@ -1,19 +1,19 @@
 const Peer = require("./Peer");
 
 class Table {
+    dice;
+
     /**
      * @type {[Slot]} the socket
      */
     slots;
-
+    playerTurn;
     /**
      * @type {Peer} the socket
      */
+    blackReserveSlot=new Slot(0,0,0);
+    whiteReserveSlot=new Slot(0,0,0);
 
-    currentPlayer;
-    dice;
-    playerBlack;
-    playerWhite;
     constructor(socket, serverID, name) {
         this.dice = { dice: [] };
         this.dice.GetString = function () {
@@ -34,19 +34,36 @@ class Table {
             this.slots[index] = new Slot(0, 0, 0);
         }
         this.slots[23] = new Slot(1, 1, 15);
-        this.playerWhite = { playerColor: 1, reserve: new Slot(0, 0, 0), id: 0, type: 3 };
-        this.playerBlack = { playerColor: 2, reserve: new Slot(0, 0, 0), id: 1, type: 3 };
-        this.currentPlayer = Math.random() > .5 ? this.playerBlack : this.playerWhite;
+        this.blackReserveSlot= new Slot(0, 0, 0);
+        this.whiteReserveSlot= new Slot(0, 0, 0);
+        this.playerTurn = Math.random() > .5 ? this.playerBlack : this.playerWhite;
     }
 
     Move(source, dest,dice) {
-        this.slots[dest].AddToken(this.slots[source].topColor);
+        
+        var piece = this.slots[source];
         this.slots[source].RemoveToken();
+        if(dest <= 23&& dest >= 0){
+            this.slots[dest].AddToken(this.slots[source].topColor);
+        }    
+        else{
+            if(piece.topColor==1){
+                this.whiteReserveSlot.AddToken(topColor);
+            }
+            else if(piece.topColor==2){
+                this.blackReserveSlot.AddToken(topColor);
+
+            }
+            else{
+                /// DO something to update the tables to everyone that ever exsisted and return
+                throw "something";
+            }
+        }
+        
         for (let i = 0; i < dice.dice.length; i++) {
             var index =this.dice.dice.indexOf(dice.dice[i]);
             this.dice.dice.splice(index,1);
-        }
-     
+        }     
     }
     Undo(source, dest,dice) {
         this.slots[dest].AddToken(this.slots[source].topColor);
