@@ -30,11 +30,11 @@ class Table {
         }
         this.GenerateDice();
         this.slots = [];
-        this.slots[23] = new Slot(2, 2, 15);
+        this.slots[0] = new Slot(2, 2, 15);
         for (let index = 1; index < 23; index++) {
             this.slots[index] = new Slot(0, 0, 0);
         }
-        this.slots[0] = new Slot(1, 1, 15);
+        this.slots[23] = new Slot(1, 1, 15);
         this.blackReserveSlot = new Slot(0, 0, 0);
         this.whiteReserveSlot = new Slot(0, 0, 0);
 
@@ -98,7 +98,6 @@ class Table {
         if (this.dice.dice[0] === this.dice.dice[1]) {
             this.dice.dice[3] = this.dice.dice[2] = this.dice.dice[0];
         }
-        this.dice.dice[0] = this.dice.dice[1] = this.dice.dice[2] = this.dice.dice[3] = 6;
 
     }
 }
