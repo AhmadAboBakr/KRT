@@ -8,7 +8,7 @@ class Tawla {
     constructor(tableData) {
         this.table = tableData;
     }
-    Apply(id, data) {
+        Apply(id, data) {
         switch (id) {
             case 2://onMove
                 this.table.Move(data.source, data.target, JSON.parse(data.dice));
@@ -30,11 +30,13 @@ class Tawla {
             case 3://undo
                 this.table.Undo(data.target, data.source, JSON.parse(data.dice));
                 break;
-            case 6:// new Round
+            case 5:// new Round
                 this.table = new Table();
                 this.table.roundData = JSON.parse(data.roundData);
+                data={};
+                data.roundData=JSON.stringify(this.table.roundData);
                 this.table.playerTurn = (this.table.started == 0) ? 1 : 0;
-                data.table = this.table;
+                data.data = JSON.stringify( this.table);
                 break;
         };
         return JSON.stringify(data);
@@ -42,3 +44,4 @@ class Tawla {
 }
 
 module.exports = Tawla;
+

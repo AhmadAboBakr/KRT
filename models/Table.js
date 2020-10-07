@@ -13,7 +13,7 @@ class Table {
      */
     blackReserveSlot = new Slot(0, 0, 0);
     whiteReserveSlot = new Slot(0, 0, 0);
-    roundData = {roundNum:0,playersScore:[0,0]};
+    roundData = { roundNum: 0, playersScore: [0, 0] };
     started;
     constructor(startingPlayer) {
         this.dice = { dice: [] };
@@ -30,35 +30,37 @@ class Table {
         }
         this.GenerateDice();
         this.slots = [];
-        this.slots[0] = new Slot(2, 2, 15);
+        this.slots[23] = new Slot(2, 2, 15);
         for (let index = 1; index < 23; index++) {
             this.slots[index] = new Slot(0, 0, 0);
         }
-        this.slots[23] = new Slot(1, 1, 15);
+        this.slots[0] = new Slot(1, 1, 15);
         this.blackReserveSlot = new Slot(0, 0, 0);
         this.whiteReserveSlot = new Slot(0, 0, 0);
 
         this.playerTurn = Math.random() > .5 ? 0 : 1;
-        this.started=this.playerTurn;
+        this.started = this.playerTurn;
+
     }
 
     Move(source, dest, dice) {
 
         var piece = this.slots[source];
         if (dest <= 23 && dest >= 0) {
-            this.slots[dest].AddToken(this.slots[source].topColor);
+            this.slots[dest].AddToken(piece.topColor);
         }
         else {
             if (piece.topColor == 1) {
-                this.whiteReserveSlot.AddToken(topColor);
+                this.whiteReserveSlot.AddToken(piece.topColor);
             }
             else if (piece.topColor == 2) {
-                this.blackReserveSlot.AddToken(topColor);
+                this.blackReserveSlot.AddToken(piece.topColor);
 
             }
             else {
                 /// DO something to update the tables to everyone that ever exsisted and return
-                throw "something";
+                console.log("Todo todo todo: Line 61");
+                //throw "something";
             }
         }
         this.slots[source].RemoveToken();
@@ -96,6 +98,8 @@ class Table {
         if (this.dice.dice[0] === this.dice.dice[1]) {
             this.dice.dice[3] = this.dice.dice[2] = this.dice.dice[0];
         }
+        this.dice.dice[0] = this.dice.dice[1] = this.dice.dice[2] = this.dice.dice[3] = 6;
+
     }
 }
 
