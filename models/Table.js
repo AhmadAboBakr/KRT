@@ -13,8 +13,9 @@ class Table {
      */
     blackReserveSlot = new Slot(0, 0, 0);
     whiteReserveSlot = new Slot(0, 0, 0);
-
-    constructor(socket, serverID, name) {
+    roundData = {roundNum:0,playersScore:[0,0]};
+    started;
+    constructor(startingPlayer) {
         this.dice = { dice: [] };
         this.dice.GetString = function () {
             var str = '{"dice":[';
@@ -36,7 +37,9 @@ class Table {
         this.slots[23] = new Slot(1, 1, 15);
         this.blackReserveSlot = new Slot(0, 0, 0);
         this.whiteReserveSlot = new Slot(0, 0, 0);
-        this.playerTurn = Math.random() > .5 ? this.playerBlack : this.playerWhite;
+
+        this.playerTurn = Math.random() > .5 ? 0 : 1;
+        this.started=this.playerTurn;
     }
 
     Move(source, dest, dice) {

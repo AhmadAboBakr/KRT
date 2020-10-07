@@ -79,7 +79,7 @@ class Room {
     }
     SendInitMessages(peer) {
         peer.sendRawMessage("init",  this.id);
-        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData) }), peer.id);
+        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData),roundData:JSON.stringify(this.tableData.roundData )}), peer.id);
         if(this.peers.length>=this.maxPeers){
             this.#app.generateRoom();
         }
