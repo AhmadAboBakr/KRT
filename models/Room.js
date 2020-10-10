@@ -86,6 +86,7 @@ class Room {
     }
     /**
      *
+     * 
      * @param {SocketIO.Socket} socket the socket used by the peer to Remove
      */
     RemovePeerBySocket(socket) {
