@@ -10,7 +10,7 @@ const expressApp = express();
 
 let routes = require('./routes');
 expressApp.use(routes);
-expressApp.listen(3500)
+expressApp.listen(3500);
 
 
 io.on("connection", (socket) => {
@@ -19,16 +19,27 @@ io.on("connection", (socket) => {
         setInterval(() => {
             socket.emit("ping");
         }, 5000);
+        if(socket.handshake.query.isPrivate== true){
+            if(socket.handshake.query.room==undefined){
+                room =app.createPrivateRoom();
+            }
+            else{
+                
+                room=app.GetPrivateRoom(socket.handshake.query.room);
 
-        if(socket.handshake.query.room == undefined){
-            console.log("someone wants a new match")
-            room=app.JoinOrCreateRoom();
-
+            }
         }
         else{
-            room = app.getRoomById(parseInt(socket.handshake.query.room));
-            console.log("someone is rejoining")
-
+            if(socket.handshake.query.room == undefined){
+                console.log("someone wants a new match")
+                room=app.JoinOrCreateRoom();
+    
+            }
+            else{
+                room = app.getRoomById(parseInt(socket.handshake.query.room));
+                console.log("someone is rejoining");
+            }
+    
         }
         var peer = new Peer(socket, String(socket.handshake.query.id), String(socket.handshake.query.userName));
         if (!room) {
@@ -44,7 +55,7 @@ io.on("connection", (socket) => {
         }
     }
     catch (error) {
-        console.log('error! ', error.message);
+        console.log('error! ', error);
     }
 
     socket.on("disconnect", () => {

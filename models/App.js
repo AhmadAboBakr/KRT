@@ -1,5 +1,6 @@
 const Room = require('./Room');
 const AppError = require('../Errors/AppError')
+const sid = require("shortid");
 
 class App {
 
@@ -7,7 +8,9 @@ class App {
      * @type { Room[] } List of rooms the app currently has
     */
     rooms = [];
+    privateRooms=[];
     lastId=-1;
+    
     /**
      * Generate a new room
      *
@@ -21,6 +24,15 @@ class App {
         this.lastId++;
         newRoom.setId(this.lastId);
         this.rooms[this.lastId]=newRoom;
+        return newRoom;
+    }
+
+    createPrivateRoom(){
+        let newRoom = new Room(this);
+        var uid= sid.generate();
+        uid=uid.toUpperCase();
+        newRoom.setId(uid);
+        this.privateRooms[uid]=newRoom;
         return newRoom;
     }
 
@@ -45,6 +57,9 @@ class App {
         else return this.generateRoom();
     }
 
+    GetPrivateRoom(id){
+        return this.privateRooms[id];
+    }
 
     removeRomeByID(id){
         this.rooms[id]=null;//// Todo make it better

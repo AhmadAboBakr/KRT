@@ -25,7 +25,7 @@ class Room {
     #hashedPeers = [];
     #app;
     constructor(app) {
-        this.#app=app;
+        this.#app = app;
         this.tableData = new Table();
     }
 
@@ -60,7 +60,7 @@ class Room {
         var hash = peer.serverID;
         if (this.#hashedPeers[hash]) {
             peer.id = this.#hashedPeers[hash].id;
-            console.log("old peer with id: ", peer.id+"in room :"+this.id);
+            console.log("old peer with id: ", peer.id + "in room :" + this.id);
 
         }
         else if (this.peers.length >= this.maxPeers) {
@@ -68,7 +68,7 @@ class Room {
         }
         else {
             peer.id = this.#currentPlayers++;
-            console.log("new peer with id: ", peer.id+"in room :"+this.id);
+            console.log("new peer with id: ", peer.id + "in room :" + this.id);
 
         }
         this.#hashedPeers[hash] = peer;
@@ -79,9 +79,12 @@ class Room {
     }
     SendInitMessages(peer) {
         peer.sendRawMessage("init",  this.id);
-        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData),roundData:JSON.stringify(this.tableData.roundData )}), peer.id);
-        if(this.peers.length>=this.maxPeers){
-            this.#app.generateRoom();
+
+        peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData), roundData: JSON.stringify(this.tableData.roundData) }), peer.id);
+        console.log(this.peers.length);
+        if (this.peers.length >= this.maxPeers) {
+            this.BroadcastMessage("0", JSON.stringify({ roundData: JSON.stringify(this.tableData.roundData) }), -1);
+            this.#app.generateRoom(); //Todo Diffrentiate room types
         }
     }
     /**
@@ -97,10 +100,10 @@ class Room {
             this.BroadcastMessage("remove", {}, seat);
             console.log("removed player number " + index + ":" + seat);
         }
-        if(this.peers.length==0){
+        if (this.peers.length == 0) {
             //// Delete Room from list
             ///// this requires a ton shit of work fuck it for now but please fix later
-          //this.#app.removeRomeByID(this.id);
+            //this.#app.removeRomeByID(this.id);
         }
         else {
             throw new AppError({ publicMessage: 'Can not remove peer' });
