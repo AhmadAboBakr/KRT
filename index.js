@@ -1,25 +1,19 @@
 'use strict';
-const express = require('express');
 const Peer = require("./models/Peer");
-const app = require("./models/App");
+const App= require("./models/App");
+const GameModes = [new App(),new App()];
+
 var io = require("socket.io")(3150);
-
-const expressApp = express();
-
-
-
 let routes = require('./routes');
-expressApp.use(routes);
-expressApp.listen(3500);
-
-
 io.on("connection", (socket) => {
     var room;
     try {
         setInterval(() => {
             socket.emit("ping");
         }, 5000);
-        if(socket.handshake.query.isPrivate== true){
+        var appId=socket.handshake.query.mode || 0;
+        var app= GameModes[appId];
+        if(socket.handshake.query.isPrivate== 'True'){
             if(socket.handshake.query.room==undefined){
                 room =app.createPrivateRoom();
             }
@@ -36,7 +30,7 @@ io.on("connection", (socket) => {
     
             }
             else{
-                room = app.getRoomById(parseInt(socket.handshake.query.room));
+                room = app.getRoomById(socket.handshake.query.room);
                 console.log("someone is rejoining");
             }
     
