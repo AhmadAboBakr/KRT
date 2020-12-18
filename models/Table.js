@@ -42,31 +42,45 @@ class Table {
         this.started = this.playerTurn;
 
     }
-
-    Move(source, dest, dice) {
-
-        var piece = this.slots[source];
-        if (dest <= 23 && dest >= 0) {
-            this.slots[dest].AddToken(piece.topColor);
-        }
-        else {
-            if (piece.topColor == 1) {
-                this.whiteReserveSlot.AddToken(piece.topColor);
-            }
-            else if (piece.topColor == 2) {
-                this.blackReserveSlot.AddToken(piece.topColor);
-
-            }
-            else {
-                /// DO something to update the tables to everyone that ever exsisted and return
-                console.log("Todo todo todo: Line 61");
-                //throw "something";
-            }
-        }
-        this.slots[source].RemoveToken();
+    CanMove(distance, dice) {
         for (let i = 0; i < dice.dice.length; i++) {
             var index = this.dice.dice.indexOf(dice.dice[i]);
-            this.dice.dice.splice(index, 1);
+            if(index<0){
+                return false;
+            }
+        }
+        return true;
+    }
+    Move(source, dest, dice) {
+        var piece = this.slots[source];
+        var disance = Math.abs(source - dest);
+        if (!this.CanMove(disance,dice)) {
+
+            return true;
+        }
+        else {
+            if (dest <= 23 && dest >= 0) {
+                this.slots[dest].AddToken(piece.topColor);
+            }
+            else {
+                if (piece.topColor == 1) {
+                    this.whiteReserveSlot.AddToken(piece.topColor);
+                }
+                else if (piece.topColor == 2) {
+                    this.blackReserveSlot.AddToken(piece.topColor);
+
+                }
+                else {
+                    /// DO something to update the tables to everyone that ever exsisted and return
+                    console.log("Todo todo todo: Line 61");
+                    //throw "something";
+                }
+            }
+            this.slots[source].RemoveToken();
+            for (let i = 0; i < dice.dice.length; i++) {
+                var index = this.dice.dice.indexOf(dice.dice[i]);
+                this.dice.dice.splice(index, 1);
+            }
         }
     }
     Undo(source, dest, dice) {

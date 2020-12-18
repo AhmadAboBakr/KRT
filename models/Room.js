@@ -1,3 +1,4 @@
+const { json } = require("express");
 const Peer = require("./Peer");
 const Table = require("./Table");
 const Tawla = require("./Tawla");
@@ -83,7 +84,7 @@ class Room {
         peer.sendMessage("1", JSON.stringify({ data: JSON.stringify(this.tableData), roundData: JSON.stringify(this.tableData.roundData) }), peer.id);
         console.log(this.peers.length);
         if (this.peers.length >= this.maxPeers) {
-            this.BroadcastMessage("0", JSON.stringify({ roundData: JSON.stringify(this.tableData.roundData) }), -1);
+            this.BroadcastMessage("0", JSON.stringify({ roundData: JSON.stringify(this.tableData.roundData),peers:JSON.stringify(this.peers) }), -1);
             this.#app.generateRoom(); //Todo Diffrentiate room types
         }
     }

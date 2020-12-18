@@ -11,7 +11,7 @@ class Tawla {
         Apply(id, data) {
         switch (id) {
             case 2://onMove
-                this.table.Move(data.source, data.target, JSON.parse(data.dice));
+                var valid=this.table.Move(data.source, data.target, JSON.parse(data.dice));
                 break;
             case 4://on end  turn
                 console.log("it was the turn of " + this.table.playerTurn);
