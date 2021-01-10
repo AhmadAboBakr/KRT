@@ -105,6 +105,9 @@ class Room {
             //// Delete Room from list
             ///// this requires a ton shit of work fuck it for now but please fix later
             //this.#app.removeRomeByID(this.id);
+            SetTimeOut(function(){
+                //TODO : check again if length =0 to remove the room
+             },20000);
         }
         else {
             throw new AppError({ publicMessage: 'Can not remove peer' });

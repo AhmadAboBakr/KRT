@@ -54,7 +54,7 @@ class Table {
     Move(source, dest, dice) {
         var piece = this.slots[source];
         var disance = Math.abs(source - dest);
-        if (!this.CanMove(disance,dice)) {
+        if (!this.CanMove(dest,dice)) {
 
             return true;
         }

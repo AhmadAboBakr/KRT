@@ -6,16 +6,11 @@ class App {
     /**
      * @type { Room[] } List of rooms the app currently has
     */
-    rooms = [];
+    rooms = []; //TODO : Refactor
     privateRooms = [];
     lastId = -1;
     test = sid.generate();
-    /**
-     * Generate a new room
-     *
-     * @returns Room a new room
-     * @throws AppError if we have too many rooms
-     */
+    
 
     createPrivateRoom() {
         let newRoom = new Room(this);
@@ -25,6 +20,12 @@ class App {
         this.privateRooms[uid] = newRoom;
         return newRoom;
     }
+    /**
+     * Generate a new room
+     *
+     * @returns Room a new room
+     * @throws AppError if we have too many rooms
+     */
     generateRoom() {
         //Just in case
         if (this.rooms.length > 1000) {

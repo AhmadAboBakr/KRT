@@ -15,7 +15,7 @@ class Peer {
     /**
      *
      * @param {SocketIO.Socket} socket The socket
-     * @param {String} serverID OVRID
+     * @param {String} serverID  ID
      * @param {string} name the user name
      */
     constructor(socket, serverID, name) {
